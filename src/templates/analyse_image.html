@@ -20,17 +20,7 @@
 	</div>
 {% endif %}
 {% if resultFilename %}
-    <object data="{{ url_for('display_result_video', filename=resultFilename) }}" width="480" height="360">
-        <param name="src" value="{{ url_for('display_result_video', filename=resultFilename) }}" />
-        <!--firefox-->
-        <embed 
-            type="video/x-ms-wm" 
-            src="{{ url_for('display_result_video', filename=resultFilename) }}" 
-            width="480" 
-            height="360"
-        ></embed>
-
-    </object>
+    <a href="{{ url_for('display_result_video', filename=resultFilename) }}">download the result video</a>
     <!-- AVI isn't supported by video tag
 	<div style="margin: 10px auto;">
 		<video autoplay="autoplay" controls="controls" preload="preload">
