@@ -20,14 +20,11 @@
 	</div>
 {% endif %}
 {% if resultFilename %}
-    <a href="{{ url_for('display_result_video', filename=resultFilename) }}">download the result video</a>
-    <!-- AVI isn't supported by video tag
-	<div style="margin: 10px auto;">
-		<video autoplay="autoplay" controls="controls" preload="preload">
-			<source src="{{ url_for('display_result_video', filename=resultFilename) }}" type="video/avi"></source>
-		</video>
-	</div>
-    -->
+<div style="margin: 10px auto;">
+	<video autoplay="autoplay" controls="controls" preload="preload">
+		<source src="{{ url_for('display_result_video', filename=resultFilename) }}" type="video/mp4"></source>
+	</video>
+</div>
 {% endif %}
 <form method="post" action="/" enctype="multipart/form-data">
     <dl>

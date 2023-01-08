@@ -1,4 +1,5 @@
 import os
+import subprocess
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 from dlclive import benchmark
@@ -42,9 +43,11 @@ def upload_video():
 		benchmark(model_path, filename_path, save_video=True, output=RESULT_FOLDER, pixels=45000)
         #print('upload_video filename: ' + filename)
 
-		result_name = os.path.basename(filename).split(".")[0] + "_DLCLIVE_LABELED.avi"
+		result_name = os.path.basename(filename).split(".")[0] + "_DLCLIVE_LABELED"
+		subprocess.call(['ffmpeg', '-i', os.path.join(RESULT_FOLDER, result_name + ".avi"), os.path.join(RESULT_FOLDER, result_name + ".mp4")])  
+
 		flash('Video successfully uploaded and displayed below')
-		return render_template('analyse_image.html', filename=filename, resultFilename=result_name, models_proposed=getModelName())
+		return render_template('analyse_image.html', filename=filename, resultFilename=(result_name + ".mp4"), models_proposed=getModelName())
 
 @app.route('/display_upload/<filename>')
 def display_upload_video(filename):
