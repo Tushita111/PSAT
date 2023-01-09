@@ -1,0 +1,48 @@
+<!doctype html>
+<title>Analyse a video</title>
+<h1>Analyse a video</h1>
+<p>
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		<ul>
+		{% for message in messages %}
+		  <li>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	  {% endif %}
+	{% endwith %}
+</p>
+{% if filename %}
+	<div style="margin: 10px auto;">
+		<video autoplay="autoplay" controls="controls" preload="preload">
+			<source src="{{ url_for('display_upload_video', filename=filename) }}" type="video/mp4"></source>
+		</video>
+	</div>
+{% endif %}
+{% if resultFilename %}
+<div style="margin: 10px auto;">
+	<video autoplay="autoplay" controls="controls" preload="preload">
+		<source src="{{ url_for('display_result_video', filename=resultFilename) }}" type="video/mp4"></source>
+	</video>
+</div>
+{% endif %}
+<form method="post" action="/" enctype="multipart/form-data">
+    <dl>
+		<p>
+			<input type="file" name="file" autocomplete="off" required>
+		</p>
+        <p>
+            {% if models_proposed %}
+                <select name="model" required>
+                    <option value="">---please select a value----</option>
+                    {% for model in models_proposed %}
+                        <option value="{{ model }}">{{ model }}</option>                        
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </p>
+    </dl>
+    <p>
+		<input type="submit" value="Upload">
+	</p>
+</form>
