@@ -41,7 +41,7 @@ def open_mod():
     modelpath = filedialog.askdirectory(title="Selectionner un modele")
 
 def launch():
-    benchmark(modelpath,filepath,display=True,pixels=45000,save_poses=True,n_frames=200,pcutoff=scale.get())
+    benchmark(modelpath,filepath,display=False,pixels=45000,save_poses=True,save_video=True,n_frames=200,pcutoff=scale.get())
 
 def view_pose(n_frame):
     
@@ -49,7 +49,7 @@ def view_pose(n_frame):
     frame = pose.loc[n_frame].swaplevel()
     xPoint = frame.loc['x']
     yPoint = frame.loc['y']
-    
+    print(frame)
     
     cap = cv2.VideoCapture(filepath)
     cap.set(1,n_frame)
@@ -67,10 +67,10 @@ def view_pose(n_frame):
         y = yPoint[i]
         node_label = xPoint.index[i]
         draw.ellipse(
-            [x-1,x+1,y-1,y+1]
+            (x-3,y-3,x+3,y+3),fill='white'
         )
         draw.text(
-            [x, y], node_label, stroke_width=12
+            (x+3, y+3), node_label, stroke_width=12
         )
     
     img.show()
