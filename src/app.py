@@ -6,9 +6,9 @@ from dlclive import benchmark
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/home/tushita/Documents/PSAT/src/static/uploads'
-MODEL_FOLDER = '/home/tushita/Documents/PSAT/src/static/models'
-RESULT_FOLDER = '/home/tushita/Documents/PSAT/src/static/results'
+UPLOAD_FOLDER = 'src/static/uploads'
+MODEL_FOLDER = 'src/static/models'
+RESULT_FOLDER = 'src/static/results'
 
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
