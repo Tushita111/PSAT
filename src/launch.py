@@ -11,8 +11,7 @@ from tkinter import *
 from tkinter import filedialog
 from dlclive import benchmark, utils
 import pandas as pd
-'''import matplotlib.pyplot as plt'''
-from PIL import Image, ImageTk, ImageDraw
+'''import matplotlib.pyplot as plt'''                                                                                                                                                                                                                                                                                                                                                                                               
 
 '''
 modelpath = ''
