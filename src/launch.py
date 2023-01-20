@@ -6,11 +6,14 @@ Created on Fri Nov  25 08:42:49 2022
 """
 
 import cv2
+from PIL import Image, ImageTk, ImageDraw
 import numpy as np
 from tkinter import *
 from tkinter import filedialog
 from dlclive import benchmark, utils
 import pandas as pd
+import display.drawSkeleton as dS
+import display.drawFrame as dF
 '''import matplotlib.pyplot as plt'''                                                                                                                                                                                                                                                                                                                                                                                               
 
 '''
@@ -39,47 +42,41 @@ def open_mod():
     global modelpath
     modelpath = filedialog.askdirectory(title="Selectionner un modele")
 
-def launch():
-    benchmark(modelpath,filepath,display=False,pixels=45000,save_poses=True,save_video=True,n_frames=200,pcutoff=scale.get())
-
 def view_pose(n_frame):
-    
     pose = pd.read_hdf(posepath)
-    frame = pose.loc[n_frame].swaplevel()
-    xPoint = frame.loc['x']
-    yPoint = frame.loc['y']
-    print(frame)
-    
     cap = cv2.VideoCapture(filepath)
+    
+    # Take the right frame from the video capture and the pose file
     cap.set(1,n_frame)
     ret, f = cap.read()
-    '''
-    im_size = (cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    resize = np.sqrt(45000 / (im_size[0] * im_size[1]))
-    im_size = (int(im_size[0] * resize), int(im_size[1] * resize))
-    f = utils.resize_frame(f, resize)
-    '''
-    img = Image.fromarray(f)
-    draw = ImageDraw.Draw(img)
-    for i in range(20):
-        x = xPoint[i]
-        y = yPoint[i]
-        node_label = xPoint.index[i]
-        draw.ellipse(
-            (x-3,y-3,x+3,y+3),fill='white'
-        )
-        draw.text(
-            (x+3, y+3), node_label, stroke_width=12
-        )
+    frame = pose.loc[n_frame].swaplevel()
     
-    img.show()
-    '''
-    plt.scatter(xPoint,yPoint)
-    for i in range(20):
-        plt.annotate(xPoint.index[i], (xPoint[i], yPoint[i]), fontsize=12)
-    plt.show()
-    '''
+    dF.displayFrame(f,frame)
 
+def analyse():
+    benchmark(modelpath,filepath,display=False,pixels=45000,save_poses=True,save_video=True,n_frames=200,pcutoff=scale.get())
+    
+def norm(arr,mini,maxi):
+    return (arr-mini)/(maxi-mini)
+    
+def view_model():
+    pose = pd.read_hdf(posepath)
+    frame = pose.loc[0].swaplevel()
+    
+    xPoint = frame.loc['x']
+    yPoint = frame.loc['y']
+    
+    # normalize arrays while keeping shape
+    mini = np.minimum(np.min(xPoint),np.min(yPoint))
+    maxi = np.maximum(np.max(xPoint),np.max(yPoint))
+    xPointN = norm(xPoint,mini,maxi)
+    yPointN = norm(yPoint,mini,maxi)
+    label = xPoint.index
+    
+    dS.displaySkeleton(xPointN,yPointN,np.zeros(20),label)
+
+def launch():
+    view_model()
     
     
 window=Tk()

@@ -8,7 +8,7 @@ import socket
 
 UDP_IP = "127.0.0.2"
 UDP_PORT = 5006
-MESSAGE = "Hello, World!"
+MESSAGE = ""
 
 try:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
